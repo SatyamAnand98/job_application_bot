@@ -30,6 +30,9 @@ class NaukriApplicationBot:
         raise ValueError(
             f"Missing required environment variables: {', '.join(missing_vars)}")
 
+    if "PASTE " in resume_text:
+        raise AttributeError("Resume text not replaced")
+
     BASE_URL = "https://www.naukri.com"
     LOGIN_SUBDIRECTORY = "/central-login-services/v1/login"
     RECOMMENDED_JOBS = "/jobapi/v2/search/recom-jobs"

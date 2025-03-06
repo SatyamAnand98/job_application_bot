@@ -14,6 +14,8 @@ Once generated, add it to your environment variables:
 export GEMINI_API_KEY=your_api_key_here
 ```
 
+> Fill in your resume.py with your resume text.
+
 ## 📦 Installation
 
 Clone the repository:
