@@ -1,14 +1,23 @@
-venv
-__pycache__
+# Virtual Environment
+/venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment Variables
 .env
-instahyre.log
-naukri.log
-previous_logs
-Satyam_Anand_Resume.pdf
-temp
+
+# Logs
+*.log
+logs/
+previous_logs/
+
+# macOS System Files
 .DS_Store
-__main__.log
-instahyre.log
-naukri.log
-src.Linkedin.linkedin.log
+
+# Temp Files & Artifacts
+temp/
+Satyam_Anand_Resume.pdf
 src/meta/logs/src.Linkedin.linkedin.log
