@@ -118,14 +118,17 @@ class LinkedinApplicationBot:
         }
 
         # initialize questions and answers file
-        self.qa_file = Path("src/meta/Linkedin/")
+        self.qa_file = Path(os.getenv("QUESTION_ANSWER_DIRECTORY"))
         self.answers = {}
 
         # if qa file does not exist, create it
         if self.qa_file.is_file():
-            df = pd.read_csv(self.qa_file)
-            for index, row in df.iterrows():
-                self.answers[row['Question']] = row['Answer']
+            try:
+                df = pd.read_csv(self.qa_file)
+                for index, row in df.iterrows():
+                    self.answers[row['Question']] = row['Answer']
+            except FileNotFoundError:
+                print("QA file not found. Please create a csv file in the QUESTION_ANSWER_DIRECTORY")
         # if qa file does exist, load it
         else:
             df = pd.DataFrame(columns=["Question", "Answer"])
