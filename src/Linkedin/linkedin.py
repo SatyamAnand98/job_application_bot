@@ -587,6 +587,7 @@ class LinkedinApplicationBot:
             question = field.text.strip()
             answer = self.ans_question(question)
             field_updated = False
+            
 
             if "email" in question.lower():
                 field.click()
