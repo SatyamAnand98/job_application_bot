@@ -1,0 +1,100 @@
+- Lists:
+      - Company_info:
+            - Name: ABB
+            - URL: https://careers.abb/global/en/home
+      - Company_info:
+            - Name: Hitachi
+            - URL: /search?q=Hitachi+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=FKDbZ8PcJtm_hbIPyonbmQk
+      - Company_info:
+            - Name: Natwest
+            - URL: /search?q=Natwest+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=GaDbZ7fqNsilhbIP16yk6Ag
+      - Company_info:
+            - Name: NTT Data
+            - URL: /search?q=NTT+Data+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=H6DbZ4rJB_qshbIPuOOioQw
+      - Company_info:
+            - Name: Dell
+            - URL: https://jobs.dell.com/en/category/software-engineer-jobs/375/70908/1
+      - Company_info:
+            - Name: Lennovo
+            - URL: /search?q=Lennovo+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=KaDbZ_moKaWnwPAPmNi14AI
+      - Company_info:
+            - Name: Baker Hughes
+            - URL: /search?q=Baker+Hughes+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=L6DbZ-U1xbTA8A-zg9XRCw
+      - Company_info:
+            - Name: Opentext
+            - URL: /search?q=Opentext+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=MqDbZ5q-L7rhseMPofeN0AU
+      - Company_info:
+            - Name: Thoughtworks
+            - URL: /search?q=Thoughtworks+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=N6DbZ8yAELGKxc8Ps5m_yQ4
+      - Company_info:
+            - Name: Rakuten
+            - URL: /search?q=Rakuten+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=OqDbZ9uTOeiExc8Pqe-g8QY
+      - Company_info:
+            - Name: Lily
+            - URL: /search?q=Lily+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=P6DbZ_mCLuWK7NYPzeKWIA
+      - Company_info:
+            - Name: HPE
+            - URL: /search?q=HPE+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=RaDbZ7zOCLPMwPAP6eOowAQ
+      - Company_info:
+            - Name: Dassault systems
+            - URL: /search?q=Dassault+systems+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=SqDbZ4HVIZDKwPAPqsOGoAI
+      - Company_info:
+            - Name: Trellix
+            - URL: /search?q=Trellix+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=T6DbZ8-8OtmuwPAPy_CSgQ0
+      - Company_info:
+            - Name: Epsilon
+            - URL: /search?q=Epsilon+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=U6DbZ6jqE8rOwPAP64vQuA8
+      - Company_info:
+            - Name: LG
+            - URL: /search?q=LG+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=VqDbZ7zJK4e_wPAPyN-lqQU
+      - Company_info:
+            - Name: IBM
+            - URL: /search?q=IBM+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=XKDbZ_aaBaizwPAP3_yI2Qg
+      - Company_info:
+            - Name: Deloitte
+            - URL: /search?q=Deloitte+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=YaDbZ4yxG4qDqgH39pzJBw
+      - Company_info:
+            - Name: KPMG
+            - URL: /search?q=KPMG+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=ZqDbZ4SDNL-9wPAP06OCIA
+      - Company_info:
+            - Name: EY
+            - URL: /search?q=EY+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=aqDbZ-GREJSvwPAP-aPl6QY
+      - Company_info:
+            - Name: PWC
+            - URL: /search?q=PWC+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=b6DbZ6nYIpKHxc8PrPLL-Qs
+      - Company_info:
+            - Name: Citi Bank
+            - URL: /search?q=Citi+Bank+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=dKDbZ5aCLuSExc8Pw7mgoQI
+      - Company_info:
+            - Name: Standard Chartered
+            - URL: /search?q=Standard+Chartered+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=eqDbZ6Qa7dHA8A_v_6b4Cg
+      - Company_info:
+            - Name: Bank Of America
+            - URL: /search?q=Bank+Of+America+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=f6DbZ7KxEvaD1fIPwdeF-Qw
+      - Company_info:
+            - Name: HSBC Bank
+            - URL: /search?q=HSBC+Bank+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=hKDbZ8T5KMKNwPAP-tKW-A4
+      - Company_info:
+            - Name: Wells Fargo
+            - URL: /search?q=Wells+Fargo+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=iKDbZ5WTCLjCwPAPwP7zsQM
+      - Company_info:
+            - Name: GE and subsidiaries
+            - URL: /search?q=GE+and+subsidiaries+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=jaDbZ9fsHvqnwPAPl-qrmQI
+      - Company_info:
+            - Name: Bosch
+            - URL: /search?q=Bosch+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=kqDbZ7XGNKqpwPAPssqMqQk
+      - Company_info:
+            - Name: Phillips
+            - URL: /search?q=Phillips+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=mKDbZ4j0DP7IwPAPm-bpIA
+      - Company_info:
+            - Name: Harman
+            - URL: /search?q=Harman+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=naDbZ43FI_WxwPAP65OlaQ
+      - Company_info:
+            - Name: Siemens
+            - URL: /search?q=Siemens+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=oqDbZ-aJOou5wPAP8qT5iAk
+      - Company_info:
+            - Name: Maersk
+            - URL: /search?q=Maersk+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=qKDbZ9LZDrOI7NYPrbWMQA
+      - Company_info:
+            - Name: Manhattan associates
+            - URL: /search?q=Manhattan+associates+careers+site&sca_esv=61d23f7bcc33af33&emsg=SG_REL&sei=raDbZ5qKH4L06APDos2oDA
