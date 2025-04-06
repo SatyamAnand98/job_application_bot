@@ -15,6 +15,8 @@ def create_venv():
     if not os.path.exists(VENV_DIR):
         print("📌 Creating virtual environment...")
         subprocess.run([sys.executable, "-m", "venv", VENV_DIR], check=True)
+    else:
+        return True
 
 def install_dependencies():
     """Ensure dependencies are installed and compatible"""
@@ -35,8 +37,10 @@ def run_script():
 
 if __name__ == "__main__":
     try:
-        create_venv()
-        install_dependencies()
+        if create_venv():
+            pass
+        else:
+            install_dependencies()
         run_script()
     except subprocess.CalledProcessError as e:
         print(f"❌ Error: {e}")

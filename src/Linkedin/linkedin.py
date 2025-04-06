@@ -599,6 +599,11 @@ class LinkedinApplicationBot:
                 field.send_keys(os.getenv("REGION_AND_CODE"))
                 field_updated = True
 
+            elif "location" in question.lower():
+                field.click()
+                field.send_keys(os.getenv("CURRENT_LOCATION"))
+                field_updated = True
+                
             elif "mobile phone number" in question.lower():
                 field.click()
                 text_input = field.find_element(*self.locator["text_select"])
