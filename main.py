@@ -5,9 +5,10 @@ from src.Instahyre.instahyre import InstahyreApplicationBot
 from src.Naukri.naukri import NaukriApplicationBot
 from src.Linkedin.linkedin import LinkedinApplicationBot
 from src.meta.logger import get_logger
+from connections.connect import main as LinkedInConnectionBot
 
 # Load environment variables
-load_dotenv()
+load_dotenv(override=True)
 
 # Get the project root dynamically
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -64,6 +65,8 @@ if __name__ == "__main__":
 
     instahyre_bot.run()
     naukri_bot.run()
+    
+    
 
     bot = LinkedinApplicationBot(
         username=required_env_vars["LINKEDIN_EMAIL"],
@@ -79,3 +82,5 @@ if __name__ == "__main__":
     )
     
     bot.start_apply(positions, locations)
+    
+    LinkedInConnectionBot()

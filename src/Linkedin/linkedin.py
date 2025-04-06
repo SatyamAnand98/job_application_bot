@@ -35,7 +35,7 @@ ChromeDriverManager = ChromeDriverManager.ChromeDriverManager
 
 
 log = get_logger(__name__)
-load_dotenv()
+load_dotenv(override=True)
 
 
 class LinkedinApplicationBot:

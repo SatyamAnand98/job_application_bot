@@ -1,8 +1,7 @@
 """Module imports"""
-import json
 from dotenv import load_dotenv
 import os
-import time
+import urllib.parse
 from datetime import datetime
 import requests
 from src.meta.logger import get_logger
@@ -12,14 +11,21 @@ from src.meta.askAI import ai_agent
 
 logger = get_logger("naukri")
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 class NaukriApplicationBot:
 
     BASE_URL = "https://www.naukri.com"
     LOGIN_SUBDIRECTORY = "/central-login-services/v1/login"
-    RECOMMENDED_JOBS = "/jobapi/v2/search/recom-jobs"
+    if os.getenv('NAUKRI_DESIGNATION_COMPANY') and len(os.getenv('NAUKRI_DESIGNATION_COMPANY')) > 0:
+        job_titles = '-'.join([item.strip().replace(' ', '-').lower() for item in os.getenv('NAUKRI_DESIGNATION_COMPANY').split(',')])
+        job_titles_encode = urllib.parse.quote(os.getenv('NAUKRI_DESIGNATION_COMPANY'))
+        if os.getenv('NAUKRI_LOCATION') and len(os.getenv('NAUKRI_LOCATION')) > 0:
+            locations_encode = urllib.parse.quote(os.getenv('NAUKRI_LOCATION'))
+        RECOMMENDED_JOBS = f'/{job_titles}-jobs/?k={job_titles_encode}&l={locations_encode}'
+    else:
+        RECOMMENDED_JOBS = "/jobapi/v2/search/recom-jobs"
     APPLY = "/cloudgateway-workflow/workflow-services/apply-workflow/v1/apply"
     RESPONSE = "/cloudgateway-chatbot/chatbot-services/botapi/v5/respond"
 

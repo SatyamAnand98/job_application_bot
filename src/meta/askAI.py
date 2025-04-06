@@ -151,6 +151,41 @@ class AI_Agent:
                     logger.error(
                         "❌ Max retries reached. Skipping questionnaire processing.")
                     return {}  # Return empty response after max retries
+                
+    def create_message(self,user_name, profile, logger):
+        response = {}
+        max_retries = 5
+        retry_delay = 30
+
+        for attempt in range(max_retries):
+            try:
+                command = f"""
+                        - I am sending a connection request to a user on LinkedIn.
+                        - Generate a message for the connection request in less than 200 characters.
+                        - The message should be polite and professional, inclined to how I am interested in connecting with the user.
+                        - My name is: {os.getenv('NAME')}
+                        - The person I am messaging is: {user_name}
+                        - I am attaching the person's information whom I am messaging.:
+                        {profile}
+                        """
+
+                questionnaire_response = self.askAI(
+                    command).replace("\n", "")
+
+                time.sleep(2)
+
+                return questionnaire_response  # Return response if successful
+
+            except Exception as e:
+                logger.error(
+                    f"❌ Error in processing questionnaires (Attempt {attempt + 1}/{max_retries}): {e}")
+                if attempt < max_retries - 1:
+                    logger.info(f"🔄 Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error(
+                        "❌ Max retries reached. Skipping questionnaire processing.")
+                    return {}  # Return empty response after max retries
 
 
 ai_agent = AI_Agent()
