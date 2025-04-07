@@ -18,14 +18,27 @@ class NaukriApplicationBot:
 
     BASE_URL = "https://www.naukri.com"
     LOGIN_SUBDIRECTORY = "/central-login-services/v1/login"
+    SEARCH = "/jobapi/v3/search"
+    
     if os.getenv('NAUKRI_DESIGNATION_COMPANY') and len(os.getenv('NAUKRI_DESIGNATION_COMPANY')) > 0:
-        job_titles = '-'.join([item.strip().replace(' ', '-').lower() for item in os.getenv('NAUKRI_DESIGNATION_COMPANY').split(',')])
-        job_titles_encode = urllib.parse.quote(os.getenv('NAUKRI_DESIGNATION_COMPANY'))
+        keyword = {
+            "keyword": os.getenv('NAUKRI_DESIGNATION_COMPANY'),
+            "pageNo": 1,
+            "noOfResults": 20,
+            "k": os.getenv('NAUKRI_DESIGNATION_COMPANY'),
+            "searchType": "adv"
+        }
+        
         if os.getenv('NAUKRI_LOCATION') and len(os.getenv('NAUKRI_LOCATION')) > 0:
-            locations_encode = urllib.parse.quote(os.getenv('NAUKRI_LOCATION'))
-        RECOMMENDED_JOBS = f'/{job_titles}-jobs/?k={job_titles_encode}&l={locations_encode}'
+            keyword["location"] = os.getenv('NAUKRI_LOCATION')
+            keyword["l"] = os.getenv('NAUKRI_LOCATION')
+            keyword["seoKey"] = f"{'-'.join([item.strip().replace(' ', '-').lower() for item in os.getenv('NAUKRI_DESIGNATION_COMPANY').split(',')])}-jobs-in-{os.getenv('NAUKRI_LOCATION').split(',')[0].replace(' ', '-').lower()}"
+        else:
+            keyword["seoKey"] = f"{'-'.join([item.strip().replace(' ', '-').lower() for item in os.getenv('NAUKRI_DESIGNATION_COMPANY').split(',')])}-jobs"
+        RECOMMENDED_JOBS = f'{SEARCH}/?{urllib.parse.urlencode(keyword)}'
     else:
         RECOMMENDED_JOBS = "/jobapi/v2/search/recom-jobs"
+    
     APPLY = "/cloudgateway-workflow/workflow-services/apply-workflow/v1/apply"
     RESPONSE = "/cloudgateway-chatbot/chatbot-services/botapi/v5/respond"
 
@@ -35,6 +48,8 @@ class NaukriApplicationBot:
         self.session = self._get_session()
         self.bearer_token = self._login()
         self.count = 0
+        self.pageNo = 1
+        self.number_of_jobs = 0
 
     def _get_session(self):
         if not hasattr(self, "_session"):
@@ -89,14 +104,15 @@ class NaukriApplicationBot:
             "systemid": "Naukri"
         }
 
-        response = self.session.post(url=url, headers=headers, json=payload)
+        response = self.session.get(url=url, headers=headers, json=payload)
 
         if response.status_code != 200:
             logger.error("❌ Failed to fetch jobs: %s", response.text)
 
         data = response.json()
 
-        number_of_jobs = data["noOfJobs"]
+        if self.number_of_jobs == 0:
+            self.number_of_jobs = data["noOfJobs"]
         jobs = data["jobDetails"]
 
         if not jobs:
@@ -104,7 +120,7 @@ class NaukriApplicationBot:
                 "⚠️ Received empty job list despite valid response.")
         else:
             logger.info(
-                "✅ Total jobs available: %d", number_of_jobs)
+                "✅ Total jobs available: %d", self.number_of_jobs)
 
         return jobs
 
@@ -145,20 +161,21 @@ class NaukriApplicationBot:
             if not data.get("jobs"):
                 logger.warning(
                     f"⚠️ No jobs found in response for {company_name}: {data}")
-                return
+                return False
 
             job_response = data["jobs"][0]  # Safe to access after checking
 
             if job_response.get("message") == "You have successfully applied to this job.":
                 logger.info(f"✅ Applied to {company_name}")
                 self.count += 1
+                return True
             elif "questionnaire" in job_response:
                 questionnaires = job_response["questionnaire"]
                 questionnaires_response = ai_agent.create_questionnaires_response(
                     questionnaires, logger)
 
                 if questionnaires_response == {}:
-                    return
+                    return False
 
                 payload["applyData"] = {
                     str(job_id): {"answers": questionnaires_response}}
@@ -170,23 +187,32 @@ class NaukriApplicationBot:
                     self.count += 1
                     logger.info(
                         f"✅ Applied to {company_name} after filling questionnaire")
+                    return True
                 else:
                     logger.error(
                         f"❌ Failed to apply at {company_name}. Response: {response.text}"
                     )
+                    return False
 
         except Exception as e:
             logger.error(
                 f"❌ Failed to apply for {company_name} with data: {logger_data} and error: {e}")
-
+        
     def run(self):
-        jobs = self.recommended_jobs()
+        
+        while self.number_of_jobs > 0 and self.pageNo <= 5:
+            jobs = self.recommended_jobs()
+            self.pageNo += 1
+            logger.info(f"🔄 Page number: {self.pageNo}"
+                        f" and total jobs available: {self.number_of_jobs}")
 
-        if jobs and len(jobs) > 0:
-            for job in jobs:
-                self.apply_to_job(job)
-        else:
-            logger.warning("⚠️ No New jobs found at the moment")
+            if jobs and len(jobs) > 0:
+                for job in jobs:
+                    if self.apply_to_job(job):
+                        self.number_of_jobs -= len(jobs)
+            else:
+                logger.warning("⚠️ No New jobs found at the moment")
+                break
 
         logger.info(f"🥳 Applied application count: {self.count}")
 
