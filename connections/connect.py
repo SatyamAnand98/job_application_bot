@@ -171,7 +171,7 @@ class LinkedinConnectionBot:
     def add_note(self):
         try:
             person_info = self.browser.find_element(*self.locator["profile_info"]).text
-            # Click the "Add a note" button
+            # Click the "Add a note" button for linkedin connection
             if(self.connection_monitor.update_requested_connections(self.user_name)):
                 add_note_button = self.browser.find_element(*self.locator["add_note_button"])
                 add_note_button.click()
