@@ -47,12 +47,17 @@ class FileHandler:
     def update_requested_connections(self, user_name):
         if self._validate_user(user_name) and self._validate_counts():
             self._requested_connections = self._requested_connections + [user_name]
+            self.update_daily_count(1)
             
             with open(self._count_file_name, "w") as f:
                 f.write(f"last_run_date: {self._today_date}\n")
                 f.write(f"weekly_count {self._week_number}: {self._weekly_count}\n")
                 f.write(f"requested_connections: {','.join(self._requested_connections)}\n")
                 f.write(f"daily_count {self._today_date}: {self._daily_count}\n")
+            
+            return True
+        else:
+            return False
             
     def update_daily_count(self, count):
         if self._validate_counts():
@@ -99,6 +104,12 @@ class FileHandler:
         # Placeholder for user validation logic
         if user_name in self._requested_connections:
             raise Exception("User already exists in requested connections.")
+        else:
+            return True
+        
+    def is_user_present(self, user_name):
+        if user_name in self._requested_connections:
+            return False
         else:
             return True
     

@@ -39,7 +39,6 @@ load_dotenv(override=True)
 
 
 class LinkedinApplicationBot:
-    # MAX_SEARCH_TIME is 10 hours by default, feel free to modify it
     MAX_SEARCH_TIME = 60 * 60
 
     def __init__(self,

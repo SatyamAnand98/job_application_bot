@@ -19,6 +19,6 @@ previous_logs/
 
 # Temp Files & Artifacts
 temp/
-Satyam_Anand_Resume.pdf
+*.pdf
 src/meta/logs/src.Linkedin.linkedin.log
 connections_monitor.txt

@@ -6,7 +6,6 @@ from datetime import datetime
 import requests
 from src.meta.logger import get_logger
 
-from src.meta.resume import resume_text
 from src.meta.askAI import ai_agent
 
 logger = get_logger("naukri")
@@ -46,7 +45,7 @@ class NaukriApplicationBot:
         self.email = email
         self.password = password
         self.session = self._get_session()
-        self.bearer_token = self._login()
+        self.bearer_token, self.nkparam = self._login()
         self.count = 0
         self.pageNo = 1
         self.number_of_jobs = 0
@@ -81,9 +80,15 @@ class NaukriApplicationBot:
         logger.info("✅ Login successful!")
 
         data = response.json()
-        bearer_token = data["cookies"][0]["value"]
+        cookies = data['cookies']
 
-        return bearer_token
+        # Extract nauk_at (Bearer token)
+        bearer_token = next((cookie['value'] for cookie in cookies if cookie['name'] == 'nauk_at'), None)
+
+        # Extract nkparam (NKWAP value)
+        nkparam = next((cookie['value'] for cookie in cookies if cookie['name'] == 'NKWAP'), None)
+
+        return bearer_token, nkparam
 
     def recommended_jobs(self):
         logger.info("🔍 Fetching jobs")
@@ -100,11 +105,15 @@ class NaukriApplicationBot:
         url = self.BASE_URL + self.RECOMMENDED_JOBS
 
         headers = {
-            "appid": "103",
-            "systemid": "Naukri"
+            "appid": "109",
+            "systemid": "Naukri",
+            "nkparam": self.nkparam
         }
 
-        response = self.session.get(url=url, headers=headers, json=payload)
+        if "/jobapi/v2/search/recom-jobs" in url:
+            response = self.session.get(url=url, headers=headers, json=payload)
+        else:
+            response = self.session.get(url=url, headers=headers)
 
         if response.status_code != 200:
             logger.error("❌ Failed to fetch jobs: %s", response.text)
@@ -199,6 +208,7 @@ class NaukriApplicationBot:
                 f"❌ Failed to apply for {company_name} with data: {logger_data} and error: {e}")
         
     def run(self):
+        self.recommended_jobs()
         
         while self.number_of_jobs > 0 and self.pageNo <= 5:
             jobs = self.recommended_jobs()

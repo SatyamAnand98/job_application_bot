@@ -1,12 +1,15 @@
 import os
 from dotenv import load_dotenv
-from src.meta.resume import resume_text
+# from src.meta.resume import resume_text
+from src.meta.get_resume_text import get_resume_text
 
 import time
 import requests
 import json
 
-load_dotenv()
+load_dotenv(override=True)
+
+resume_text = get_resume_text()
 
 required_env_vars = {
     "GEMINI_KEY": os.getenv("GEMINI_API_KEY")
@@ -37,7 +40,7 @@ class AI_Agent:
         raise ValueError(
             f"Missing required environment variables: {', '.join(missing_vars)}")
 
-    if "PASTE " in resume_text:
+    if not resume_text:
         raise AttributeError("Resume text not replaced")
 
     GENDER = required_env_vars["GENDER"]
@@ -82,6 +85,7 @@ class AI_Agent:
                     - answer in minimum possible words as I am pasting the same for text box.
                     - based upon my resume, answer the question very precisely.
                     - if there are values in answerOptions, return me the exact value to the correct answer associated.
+                    - NOTE: Prepare each question's answer exactly as per my resume. The experience values can be more but NEVER less as per my resume.
                     - question is: '{question_name}'
                     - answerOptions is: {response_options}
                     - if required my gender is {self.GENDER}
@@ -125,6 +129,7 @@ class AI_Agent:
                 - answer in minimum possible words as I am pasting the same for text box.
                 - based upon my resume, answer the question very precisely.
                 - if there are values in answerOptions, return me the exact value to the correct answer associated.
+                - NOTE: Prepare each question's answer exactly as per my resume. The experience values can be more but NEVER less as per my resume
                 - question is: '{question}'
                 {f'- answerOptions is: {options}' if options else ''}
                 - if required my gender is {self.GENDER}
@@ -164,9 +169,9 @@ class AI_Agent:
                         - Generate a message for the connection request in less than 200 characters.
                         - The message should be polite and professional, inclined to how I am interested in connecting with the user.
                         - My name is: {os.getenv('NAME')}
-                        - The person I am messaging is: {user_name}
-                        - I am attaching the person's information whom I am messaging.:
-                        {profile}
+                        - The person I am messaging is: {user_name}, if this name is missing, just address with Hi!
+                        - I am attaching the person's information whom I am messaging.:{profile}. \n if person's information is not present don't add variable name
+                        - NOTE: not to leave any replaceable items as I am going to copy and paste exactly as it is.
                         """
 
                 questionnaire_response = self.askAI(

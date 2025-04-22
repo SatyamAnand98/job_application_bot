@@ -5,7 +5,7 @@ from src.Instahyre.instahyre import InstahyreApplicationBot
 from src.Naukri.naukri import NaukriApplicationBot
 from src.Linkedin.linkedin import LinkedinApplicationBot
 from src.meta.logger import get_logger
-from connections.connect import main as LinkedInConnectionBot
+# from connections.connect import main as LinkedInConnectionBot
 
 # Load environment variables
 load_dotenv(override=True)
@@ -53,34 +53,34 @@ blacklist_titles = get_list("BLACKLIST_TITLES")
 experience_level = [int(x) for x in get_list("EXPERIENCE_LEVEL") if x.isdigit()]
 
 if __name__ == "__main__":
-    # instahyre_bot = InstahyreApplicationBot(
-    #     email=required_env_vars["INSTAHYRE_EMAIL"],
-    #     password=required_env_vars["INSTAHYRE_PASSWORD"],
-    #     limit=30
-    # )
+    instahyre_bot = InstahyreApplicationBot(
+        email=required_env_vars["INSTAHYRE_EMAIL"],
+        password=required_env_vars["INSTAHYRE_PASSWORD"],
+        limit=30
+    )
     naukri_bot = NaukriApplicationBot(
         email=required_env_vars["NAUKRI_EMAIL"],
         password=required_env_vars["NAUKRI_PASSWORD"]
     )
 
-    # instahyre_bot.run()
+    instahyre_bot.run()
     naukri_bot.run()
     
     
 
-    # bot = LinkedinApplicationBot(
-    #     username=required_env_vars["LINKEDIN_EMAIL"],
-    #     password=required_env_vars["LINKEDIN_PASSWORD"],
-    #     phone_number=required_env_vars["PHONE_NUMBER"],
-    #     salary=int(required_env_vars["SALARY"]),
-    #     rate=int(required_env_vars["RATE"]),
-    #     uploads=uploads,
-    #     filename=output_filename,
-    #     blacklist=blacklist_companies,
-    #     blackListTitles=blacklist_titles,
-    #     experience_level=experience_level
-    # )
+    bot = LinkedinApplicationBot(
+        username=required_env_vars["LINKEDIN_EMAIL"],
+        password=required_env_vars["LINKEDIN_PASSWORD"],
+        phone_number=required_env_vars["PHONE_NUMBER"],
+        salary=int(required_env_vars["SALARY"]),
+        rate=int(required_env_vars["RATE"]),
+        uploads=uploads,
+        filename=output_filename,
+        blacklist=blacklist_companies,
+        blackListTitles=blacklist_titles,
+        experience_level=experience_level
+    )
     
-    # bot.start_apply(positions, locations)
+    bot.start_apply(positions, locations)
     
     # LinkedInConnectionBot()

@@ -88,6 +88,8 @@ class LinkedinConnectionBot:
         self.start_linkedin(username, password)
         self.page_number = 1
         
+        self.connection_monitor = connection_monitor
+        
         log.info("Starting LinkedinConnectionBot ...")
         
     def start_linkedin(self, username, password):
@@ -150,7 +152,6 @@ class LinkedinConnectionBot:
                     h2_element = self.browser.find_elements(By.CSS_SELECTOR, 'h2')
                     for h2 in h2_element:
                         if h2.text.strip() == "Add a note to your invitation?":
-                            connection_monitor.update_requested_connections(self.user_name)
                             return False
                     return True
             raise Exception("Connect button not found")
@@ -171,17 +172,21 @@ class LinkedinConnectionBot:
         try:
             person_info = self.browser.find_element(*self.locator["profile_info"]).text
             # Click the "Add a note" button
-            add_note_button = self.browser.find_element(*self.locator["add_note_button"])
-            add_note_button.click()
-            time.sleep(2)
-            message = self.ai_agent.create_message(self.user_first_name, person_info, log)
-            message = message[:self.MAX_CHARACTER_COUNT]
-            self.browser.find_element(*self.locator["add_message"]).send_keys(message)
-            time.sleep(2)
-            self.browser.find_element(*self.locator["send_button"]).click()
-            log.info("Note added successfully.")
+            if(self.connection_monitor.update_requested_connections(self.user_name)):
+                add_note_button = self.browser.find_element(*self.locator["add_note_button"])
+                add_note_button.click()
+                time.sleep(2)
+                message = self.ai_agent.create_message(self.user_first_name, person_info, log)
+                message = message[:self.MAX_CHARACTER_COUNT]
+                self.browser.find_element(*self.locator["add_message"]).send_keys(message)
+                time.sleep(2)
+                self.browser.find_element(*self.locator["send_button"]).click()
+                log.info("Note added successfully.")
+            else:
+                raise Exception("Daily or Weekly Limit reached")
         except Exception as e:
             log.error(f"Error adding note: {e}")
+            sys.exit(1)
     
     def open_new_tab(self, profile_url):
         self.browser.execute_script("window.open('');")
@@ -258,18 +263,17 @@ class LinkedinConnectionBot:
             # TODO:
             # 1. Extract the user's profile information
             # 2. Extract the user's name
-            self.open_new_tab(profile_url)
-            time.sleep(5)
-            self.print_cards()
-            time.sleep(2)
-            self.click_connect_button()
-            time.sleep(2)
-            self.add_note()
-            time.sleep(5)
-            self.close_current_tab()
-            connection_monitor.update_requested_connections(self.user_name)
-            connection_monitor.update_daily_count(1)
-            time.sleep(3)
+            if connection_monitor.is_user_present(self.user_name):
+                self.open_new_tab(profile_url)
+                time.sleep(5)
+                self.print_cards()
+                time.sleep(2)
+                self.click_connect_button()
+                time.sleep(2)
+                self.add_note()
+                time.sleep(5)
+                self.close_current_tab()
+                time.sleep(3)
         except Exception as e:
             log.error(f"Error processing profile {profile_url}: {e}")
     
