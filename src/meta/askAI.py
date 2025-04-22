@@ -170,7 +170,7 @@ class AI_Agent:
                         - The message should be polite and professional, inclined to how I am interested in connecting with the user.
                         - My name is: {os.getenv('NAME')}
                         - The person I am messaging is: {user_name}, if this name is missing, just address with Hi!
-                        - I am attaching the person's information whom I am messaging.:{profile}. \n if person's information is not present don't add variable name
+                        {f'- I am attaching the person(s) information whom I am messaging.:{profile}.' if profile else ''}
                         - NOTE: not to leave any replaceable items as I am going to copy and paste exactly as it is.
                         """
 

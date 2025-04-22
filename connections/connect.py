@@ -179,7 +179,7 @@ class LinkedinConnectionBot:
                 message = self.ai_agent.create_message(self.user_first_name, person_info, log)
                 message = message[:self.MAX_CHARACTER_COUNT]
                 self.browser.find_element(*self.locator["add_message"]).send_keys(message)
-                time.sleep(2)
+                time.sleep(20)
                 self.browser.find_element(*self.locator["send_button"]).click()
                 log.info("Note added successfully.")
             else:
