@@ -186,7 +186,6 @@ class LinkedinConnectionBot:
                 raise Exception("Daily or Weekly Limit reached")
         except Exception as e:
             log.error(f"Error adding note: {e}")
-            sys.exit(1)
     
     def open_new_tab(self, profile_url):
         self.browser.execute_script("window.open('');")
@@ -332,22 +331,25 @@ class LinkedinConnectionBot:
             return {}
         
     def print_cards(self):
-        button = self.browser.find_element(By.XPATH, "//button[contains(@aria-label, 'Invite')]")
-        aria_label = button.get_attribute("aria-label")
-        match = re.search(r"Invite\s([A-Za-z]+)", aria_label)
+        try:
+            button = self.browser.find_element(By.XPATH, "//button[contains(@aria-label, 'Invite')]")
+            aria_label = button.get_attribute("aria-label")
+            match = re.search(r"Invite\s([A-Za-z]+)", aria_label)
 
-        if match:
-            name = match.group(1)
-            self.user_first_name = name
-        
-        cards = self.browser.find_elements(*self.locator["card_info"])
-        for card in cards:
-            h2_element = card.find_element(By.CSS_SELECTOR, 'h2.pvs-header__title')
+            if match:
+                name = match.group(1)
+                self.user_first_name = name
             
-            if "experience" in h2_element.text.strip().lower():
-                # check for li with class name = "artdeco-list__item" inside it
-                experience_elements = card.find_elements(By.CSS_SELECTOR, 'li.artdeco-list__item')[0]
-                print(experience_elements.text.strip())
+            cards = self.browser.find_elements(*self.locator["card_info"])
+            for card in cards:
+                h2_element = card.find_element(By.CSS_SELECTOR, 'h2.pvs-header__title')
+                
+                if "experience" in h2_element.text.strip().lower():
+                    # check for li with class name = "artdeco-list__item" inside it
+                    experience_elements = card.find_elements(By.CSS_SELECTOR, 'li.artdeco-list__item')[0]
+                    print(experience_elements.text.strip())
+        except Exception as e:
+            log.error("Exception in print cards: ", e)
     
     def visit_profiles(self):
         time.sleep(5)
