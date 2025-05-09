@@ -49,6 +49,7 @@ class NaukriApplicationBot:
         self.count = 0
         self.pageNo = 1
         self.number_of_jobs = 0
+        self.applied_jobs_count = 0
 
     def _get_session(self):
         if not hasattr(self, "_session"):
@@ -113,6 +114,32 @@ class NaukriApplicationBot:
         if "/jobapi/v2/search/recom-jobs" in url:
             response = self.session.get(url=url, headers=headers, json=payload)
         else:
+            # find pageNo and update the url using the keyword
+            if self.keyword.get("pageNo") is not None:
+                self.keyword["pageNo"] = self.pageNo
+                self.keyword["noOfResults"] = 20
+                self.keyword["k"] = os.getenv('NAUKRI_DESIGNATION_COMPANY')
+                self.keyword["l"] = os.getenv('NAUKRI_LOCATION')
+                self.keyword["seoKey"] = f"{'-'.join([item.strip().replace(' ', '-').lower() for item in os.getenv('NAUKRI_DESIGNATION_COMPANY').split(',')])}-jobs-in-{os.getenv('NAUKRI_LOCATION').split(',')[0].replace(' ', '-').lower()}"
+            else:
+                logger.error("❌ Page number not found in keyword")
+                return []
+            url = self.BASE_URL + self.SEARCH + "/?" + urllib.parse.urlencode(self.keyword)
+            # payload = {
+            #     "clusterSplitDate": {
+            #         "apply": formatted_datetime,
+            #         "preference": "1980-01-01 05:30:00",
+            #         "profile": "1980-01-01 05:30:00",
+            #         "similar_jobs": "1980-01-01 05:30:00"
+            #     },
+            #     "searches": None
+            # }
+            # headers = {
+            #     "appid": "109",
+            #     "systemid": "Naukri",
+            #     "nkparam": self.nkparam,
+            #     "Content-Type": "application/json"
+            # }
             response = self.session.get(url=url, headers=headers)
 
         if response.status_code != 200:
@@ -208,22 +235,29 @@ class NaukriApplicationBot:
                 f"❌ Failed to apply for {company_name} with data: {logger_data} and error: {e}")
         
     def run(self):
-        self.recommended_jobs()
-        
-        while self.number_of_jobs > 0 and self.pageNo <= 5:
-            jobs = self.recommended_jobs()
-            self.pageNo += 1
-            logger.info(f"🔄 Page number: {self.pageNo}"
-                        f" and total jobs available: {self.number_of_jobs}")
+        try:
+            self.recommended_jobs()
+            
+            while self.number_of_jobs > 0 and self.count < 20:
+                jobs = self.recommended_jobs()
+                self.pageNo += 1
+                logger.info(f"🔄 Page number: {self.pageNo}"
+                            f" and total jobs available: {self.number_of_jobs}")
 
-            if jobs and len(jobs) > 0:
-                for job in jobs:
-                    if self.apply_to_job(job):
-                        self.number_of_jobs -= len(jobs)
-            else:
-                logger.warning("⚠️ No New jobs found at the moment")
-                break
+                if jobs and len(jobs) > 0:
+                    for job in jobs:
+                        if self.apply_to_job(job):
+                            self.number_of_jobs -= len(jobs)
+                else:
+                    logger.warning("⚠️ No New jobs found at the moment")
+                    break
 
-        logger.info(f"🥳 Applied application count: {self.count}")
+            logger.info(f"🥳 Applied application count: {self.count}")
 
-        return "Done"
+            return "Done"
+        except Exception as e:
+            logger.error(f"❌ Error in Naukri Bot: {e}")
+            return "Error"
+        finally:
+            self.session.close()
+            logger.info("🔒 Naukri session closed")

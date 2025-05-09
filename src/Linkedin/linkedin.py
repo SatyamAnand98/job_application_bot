@@ -481,6 +481,7 @@ class LinkedinApplicationBot:
                 if len(self.get_elements("submit")) > 0:
                     if self.get_elements(self.locator["form_fields"]):
                         self.process_questions()
+                        time.sleep(8)
                     elements = self.get_elements("submit")
                     for element in elements:
                         button = self.wait.until(
@@ -493,6 +494,7 @@ class LinkedinApplicationBot:
                 elif len(self.get_elements("error")) > 0:
                     if self.get_elements(self.locator["form_fields"]):
                         self.process_questions()
+                        time.sleep(8)
                     elements = self.get_elements("error")
                     if "application was sent" in self.browser.page_source:
                         log.info("Application Submitted")
@@ -507,6 +509,7 @@ class LinkedinApplicationBot:
 
                             for element in elements:
                                 self.process_questions()
+                                time.sleep(8)
 
                             if "application was sent" in self.browser.page_source:
                                 log.info("Application Submitted")
@@ -547,6 +550,7 @@ class LinkedinApplicationBot:
                 elif len(self.get_elements("next")) > 0:
                     if self.get_elements(self.locator["form_fields"]):
                         self.process_questions()
+                        time.sleep(8)
                     elements = self.get_elements("next")
                     for element in elements:
                         button = self.wait.until(
@@ -556,6 +560,7 @@ class LinkedinApplicationBot:
                 elif len(self.get_elements("review")) > 0:
                     if self.get_elements(self.locator["form_fields"]):
                         self.process_questions()
+                        time.sleep(8)
                     elements = self.get_elements("review")
                     for element in elements:
                         button = self.wait.until(

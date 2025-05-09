@@ -126,18 +126,42 @@ class AI_Agent:
         for attempt in range(max_retries):
             try:
                 command = f"""
-                - answer in minimum possible words as I am pasting the same for text box.
-                - based upon my resume, answer the question very precisely.
-                - if there are values in answerOptions, return me the exact value to the correct answer associated.
-                - NOTE: Prepare each question's answer exactly as per my resume. The experience values can be more but NEVER less as per my resume
-                - question is: '{question}'
-                {f'- answerOptions is: {options}' if options else ''}
-                - if required my gender is {self.GENDER}
-                - My current salary is: {self.CURRENT_CTC}
-                - My Salary expectation is: {self.EXPECTED_CTC}
-                - My Notice period is: {self.NOTICE_PERIOD}
-                - resume is: {resume_text}
-                """
+                    You are generating precise and concise answers for LinkedIn job application questionnaires. Follow the instructions strictly:
+
+                    1. **Experience Questions:**
+                    - NEVER return 0 years or less than 3 years of experience.
+                    - If applicable, use the actual experience from the resume, but NEVER below 3 years.
+                    - You may round up, but do not exaggerate unrealistically.
+
+                    2. **Answer Format:**
+                    - Provide the shortest possible answer suitable for direct input into a text box.
+                    - Do NOT include any explanation, greetings, or additional context—just the answer.
+
+                    3. **AnswerOptions Handling:**
+                    - If `answerOptions` are provided, return ONLY the exact matching value from the list that best fits the answer.
+                    - Do NOT modify or approximate the options—select the most accurate one from the list.
+                    - And, I am ready to move to the location of the job, so always return yes
+
+                    4. **Answer Precision:**
+                    - Base your answer **strictly** on the content of the provided resume.
+                    - If the resume supports a higher value than asked, use it. Never return less than what’s on the resume.
+
+                    5. **Additional Information:**
+                    - Gender: {self.GENDER}
+                    - Current CTC: {self.CURRENT_CTC}
+                    - Expected CTC: {self.EXPECTED_CTC}
+                    - Notice Period: {self.NOTICE_PERIOD}
+
+                    6. **Response Rules:**
+                    - Do NOT return anything except the answer.
+                    - Do NOT rephrase or restate the question.
+
+                    Now answer the following:
+
+                    - **Question:** '{question}'  
+                    {f'- **Answer Options**: {options}' if options else ''}  
+                    - **Resume**: {resume_text}
+                    """
 
                 questionnaire_response = self.askAI(
                     command).replace("\n", "")
