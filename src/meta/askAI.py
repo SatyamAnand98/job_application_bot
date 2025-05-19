@@ -134,8 +134,9 @@ class AI_Agent:
                     - You may round up, but do not exaggerate unrealistically.
 
                     2. **Answer Format:**
-                    - Provide the shortest possible answer suitable for direct input into a text box.
-                    - Do NOT include any explanation, greetings, or additional context—just the answer.
+                    - Provide the shortest possible answer suitable for direct input into a text/ numerical box.
+                    - Do NOT include any explanation, greetings, yes/ no (if not required) or additional context—just the answer.
+                    - If asked for number, do not provide any text, just the number.
 
                     3. **AnswerOptions Handling:**
                     - If `answerOptions` are provided, return ONLY the exact matching value from the list that best fits the answer.
@@ -155,6 +156,7 @@ class AI_Agent:
                     6. **Response Rules:**
                     - Do NOT return anything except the answer.
                     - Do NOT rephrase or restate the question.
+                    - revisit the answer and check if there are no additional words or phrases or characters (including yes or no) that are not required.
 
                     Now answer the following:
 
